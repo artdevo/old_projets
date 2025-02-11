@@ -31,8 +31,8 @@ jobs:
           codeclimate analyze --dev -f json > codeclimate.json
 
       - name: Upload Code Climate data
-        uses: codeclimate/cc-github-reporter@v1
+        uses: paambaati/codeclimate-action@v9.0.0
         env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }} # Your Code Climate Test Reporter ID
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }} 
         with:
            coverageCommand: 'cat codeclimate.json'
