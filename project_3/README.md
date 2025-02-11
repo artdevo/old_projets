@@ -1,0 +1,8 @@
+Программа для разметки логов запросов к веб-серверу по типам устройств, с которых пришел запрос.
+Результат работы:
+
+desktop 2001:db8:9a88:ac14:3689:9a62:872d:e784 [25/03/2024:12:42:54 +0300] "GET /how-much-is-the-fish HTTP/1.0" 301 58940 "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0"
+mobile 2001:db8:4a37:82d9:d8f7:ab69:a024:8cf1 [25/03/2024:12:42:55 +0300] "GET /penguins-jump-in-the-air HTTP/1.0" 500 66486 "Mozilla/5.0 (Linux; Android 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Mobile Safari/537.36"
+desktop 2001:db8:4f6e:aa51:a90d:62d6:95e5:d50 [25/03/2024:12:42:55 +0300] "GET /this-is-a-lucky-string HTTP/1.0" 200 46842 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:59.0) Gecko/20100101 Firefox/59.0"
+
+..
