@@ -1,0 +1,207 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "source": [
+        "def create_substitution_alphabet(keyword, k):\n",
+        "    \"\"\"\n",
+        "    Создает алфавит подстановки на основе ключевого слова и числа K (циклический сдвиг).\n",
+        "\n",
+        "    \"\"\"\n",
+        "\n",
+        "    alphabet = \"абвгдежзийклмнопрстуфхцчшщъыьэюя\"\n",
+        "    keyword = keyword.lower()\n",
+        "    keyword = ''.join(sorted(set(keyword), key=keyword.index))  # Убираем дубликаты, сохраняя порядок\n",
+        "\n",
+        "    substitution_alphabet = keyword\n",
+        "\n",
+        "    # Добавляем остальные буквы алфавита, которых нет в ключевом слове\n",
+        "    for char in alphabet:\n",
+        "        if char not in substitution_alphabet:\n",
+        "            substitution_alphabet += char\n",
+        "\n",
+        "    # Циклический сдвиг\n",
+        "    k = k % 32  # Убедимся, что k находится в диапазоне от 0 до 31\n",
+        "    substitution_alphabet = substitution_alphabet[-k:] + substitution_alphabet[:-k]\n",
+        "\n",
+        "    return substitution_alphabet\n",
+        "\n",
+        "\n",
+        "def caesar_cipher_substitution(text, substitution_alphabet, encrypt=True):\n",
+        "    \"\"\"\n",
+        "    Шифрует текст, используя алфавит подстановки.\n",
+        "\n",
+        "    \"\"\"\n",
+        "\n",
+        "    alphabet = \"абвгдежзийклмнопрстуфхцчшщъыьэюя\"\n",
+        "\n",
+        "    if encrypt:\n",
+        "        encrypted_text = \"\"\n",
+        "        for char in text:\n",
+        "            if 'а' <= char <= 'я':\n",
+        "                  index = alphabet.find(char)\n",
+        "                  if index != -1:\n",
+        "                      encrypted_text += substitution_alphabet[index]\n",
+        "                  else:\n",
+        "                      encrypted_text += char  # Если буква не найдена, оставляем как есть\n",
+        "            elif 'А' <= char <= 'Я':\n",
+        "                char_lower = char.lower() # переводим в нижний регистр для поиска индекса\n",
+        "                index = alphabet.find(char_lower)\n",
+        "                if index != -1:\n",
+        "                    encrypted_text += substitution_alphabet[index].upper() # Возвращаем заглавную букву\n",
+        "                else:\n",
+        "                    encrypted_text += char\n",
+        "            else:\n",
+        "                encrypted_text += char  # Оставляем не-буквы без изменений\n",
+        "        result = encrypted_text\n",
+        "\n",
+        "    else:\n",
+        "        decrypted_text = \"\"\n",
+        "        for char in text:\n",
+        "            if 'а' <= char <= 'я':\n",
+        "                index = substitution_alphabet.find(char)\n",
+        "                if index != -1:\n",
+        "                    decrypted_text += alphabet[index]\n",
+        "                else:\n",
+        "                    decrypted_text += char  # Если буква не найдена, оставляем как есть\n",
+        "            elif 'А' <= char <= 'Я':\n",
+        "                char_lower = char.lower() # переводим в нижний регистр для поиска индекса\n",
+        "                index = substitution_alphabet.find(char_lower)\n",
+        "                if index != -1:\n",
+        "                    decrypted_text += alphabet[index].upper() # Возвращаем заглавную букву\n",
+        "                else:\n",
+        "                    decrypted_text += char\n",
+        "            else:\n",
+        "                decrypted_text += char  # Оставляем не-буквы без изменений\n",
+        "        result = decrypted_text\n",
+        "\n",
+        "    return result\n",
+        "\n",
+        "\n",
+        "# Пример использования:\n",
+        "keyword = \"любое\"\n",
+        "k = 13\n",
+        "substitution_alphabet = create_substitution_alphabet(keyword, k)\n",
+        "print(\"Алфавит подстановки:\", substitution_alphabet)\n",
+        "\n",
+        "text = \"Съешь же ещё этих мягких французских булок да выпей чаю\"\n",
+        "encrypted_text = caesar_cipher_substitution(text, substitution_alphabet)\n",
+        "print(\"Исходный текст:\", text)\n",
+        "print(\"Зашифрованный текст:\", encrypted_text)\n",
+        "\n",
+        "decrypted_text = caesar_cipher_substitution(encrypted_text, substitution_alphabet, False)\n",
+        "print(\"Дешифрованный текст:\", decrypted_text)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "UjeVU8WGtH25",
+        "outputId": "8f2105f6-035b-4eaf-ebc8-0bb42d445d6c"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Алфавит подстановки: туфхцчшщъыьэялюбоеавгджзийкмнпрс\n",
+            "Исходный текст: Съешь же ещё этих мягких французских булок да выпей чаю\n",
+            "Зашифрованный текст: Екчин шч чйё паъд ясхьъд готлжвщеьъд увэюь цт фмбчы зтр\n",
+            "Дешифрованный текст: Съешь же ещё этих мягких французских булок да выпей чаю\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def gronsfeld_cipher(text, key, encrypt=True):\n",
+        "    \"\"\"\n",
+        "    Реализует шифр Гронсфельда.\n",
+        "\n",
+        "    \"\"\"\n",
+        "\n",
+        "    alphabet = \"абвгдежзийклмнопрстуфхцчшщъыьэюя\"\n",
+        "    result = \"\"\n",
+        "    key_length = len(key)\n",
+        "\n",
+        "    for i, char in enumerate(text):\n",
+        "        if 'а' <= char <= 'я':\n",
+        "            shift = int(key[i % key_length]) # Получаем цифру смещения из ключа\n",
+        "            index = alphabet.find(char)\n",
+        "\n",
+        "            if encrypt:\n",
+        "                shifted_index = (index + shift) % 32  # Шифрование\n",
+        "            else:\n",
+        "                shifted_index = (index - shift) % 32  # Дешифрование\n",
+        "\n",
+        "            result += alphabet[shifted_index]\n",
+        "\n",
+        "        elif 'А' <= char <= 'Я':\n",
+        "             shift = int(key[i % key_length])\n",
+        "             char_lower = char.lower()\n",
+        "             index = alphabet.find(char_lower)\n",
+        "\n",
+        "             if encrypt:\n",
+        "                 shifted_index = (index + shift) % 32  # Шифрование\n",
+        "             else:\n",
+        "                 shifted_index = (index - shift) % 32  # Дешифрование\n",
+        "             result += alphabet[shifted_index].upper()\n",
+        "\n",
+        "\n",
+        "        else:\n",
+        "            result += char  # Оставляем не-буквы без изменений\n",
+        "\n",
+        "    return result\n",
+        "\n",
+        "\n",
+        "# Пример использования:\n",
+        "text = \"Съешь же ещё этих мягких французских булок да выпей чаю\"\n",
+        "key = \"123\"\n",
+        "\n",
+        "encrypted_text = gronsfeld_cipher(text, key)\n",
+        "print(\"Исходный текст:\", text)\n",
+        "print(\"Ключ:\", key)\n",
+        "print(\"Зашифрованный текст:\", encrypted_text)\n",
+        "\n",
+        "decrypted_text = gronsfeld_cipher(encrypted_text, key, encrypt=False)\n",
+        "print(\"Дешифрованный текст:\", decrypted_text)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "KM8ZSwt3tOyu",
+        "outputId": "80206f15-6118-4137-9eed-f1dcdd71b715"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Исходный текст: Съешь же ещё этих мягких французских булок да выпей чаю\n",
+            "Ключ: 567\n",
+            "Зашифрованный текст: Цамэв лл кяё гщны секпоь ъчеуэшншпоь зърфс кз ивфлр эзг\n",
+            "Дешифрованный текст: Съешь же ещё этих мягких французских булок да выпей чаю\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
